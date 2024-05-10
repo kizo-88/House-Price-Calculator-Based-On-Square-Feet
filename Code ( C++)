@@ -1,0 +1,198 @@
+#include<stdio.h>
+#include<stdlib.h>
+float calcprice(float, char);
+float calcdiscount(float, int, char);
+float calchousetax (float);
+float calcfinalprice (float,float,float,char);
+
+void main()
+{
+    FILE* fwelcome;
+    fwelcome = fopen ("welcoming.txt", "r");
+
+    char str[50];
+    fgets(str, 50, fwelcome);
+    puts (str);
+    fclose (fwelcome);
+
+    char agentname[100];
+    int i;
+    int workerID, firsttime, quantity;
+    char BuySell;
+    float squarefeet, price, discount, housetax, finalprice;
+
+    printf("\n        BUYING OR SELLING HOUSE CALCULATION");
+    printf("\n==============================================\n");
+    fflush(stdin);
+    printf("Please enter your Agent name: ");
+    gets(agentname);
+    printf("Please enter your worker ID : ");
+    scanf ("%i", &workerID);
+
+    fflush(stdin);
+    printf("\nDo you want to buy or sell the house? [B for buy , S for sell]: ");
+    scanf ("%c", &BuySell);
+    printf("How much customer's house do you want to calculate?: ");
+    scanf("%i", &quantity);
+
+    int custAge[quantity];
+    char custName[quantity][100];
+
+    for (i=0;i<quantity;i++)
+    {
+        fflush(stdin);
+        printf("\nEnter Customer Name %i: ",i+1);
+        scanf(" %[^\n]s", &custName[i]);
+        printf("Enter Customer Age %i: ",i+1);
+        scanf("%d", &custAge[i]);
+
+        if (custAge[i] >= 20)
+        {
+            printf("Is this your first time? [1 for YES, 0 for NO] : ");
+            scanf("%i", &firsttime);
+            printf("Please enter total square feet of the house: ");
+            scanf ("%f", &squarefeet);
+
+            if (BuySell=='B' || BuySell=='b')
+            {
+                price=calcprice(squarefeet, BuySell);
+            }
+            else if (BuySell=='S' || BuySell=='s')
+            {
+                price=calcprice(squarefeet, BuySell);
+            }
+
+            int *pcustage=&custAge[i];
+
+            discount=calcdiscount(price, firsttime, BuySell);
+            housetax=calchousetax(price);
+            finalprice=calcfinalprice(price, discount, housetax, BuySell);
+            printf("\n   CUSTOMER DETAILS   ");
+            printf("\n**********************");
+            printf("\nName           : %s",custName[i]);
+            printf("\nAge            : %i",*pcustage);
+            printf("\nPrice          : RM%.2f", price);
+            printf("\nDiscount Price : RM%.2f", discount);
+            printf("\nHouse Tax      : RM%.2f", housetax);
+            printf("\nFinal Price    : RM%.2f\n", finalprice);
+        }
+        else
+        {
+            printf("\nYour age below 20, you cannot buy or sell a house\n");
+        }
+    }
+
+    int code;
+    FILE *referencecode;
+    referencecode = fopen("reference.txt", "w");
+    fprintf(referencecode, "Agent's reference code: %i", &code);
+    fclose(referencecode);
+
+}
+float calcprice(float squarefeet, char BuySell)
+{
+    float price2;
+        if(BuySell=='S' || BuySell=='s' )
+        {
+            if(squarefeet>2400)
+            {
+                price2=(squarefeet/2700)*1450000;
+            }
+            else if(squarefeet<=2400)
+            {
+                price2=(squarefeet/2400)*1300000;
+            }
+            else if(squarefeet<=2100)
+            {
+                price2=(squarefeet/2100)*1150000;
+            }
+            else if(squarefeet<=1800)
+            {
+                price2=(squarefeet/1800)*1000000;
+            }
+            else if(squarefeet<=1500)
+            {
+                price2=(squarefeet/1500)*850000;
+            }
+            else if(squarefeet<=1200)
+            {
+                price2=(squarefeet/1200)*700000;
+            }
+            else if(squarefeet<=900)
+            {
+                price2=(squarefeet/900)*500000;
+            }
+        }
+        else if(BuySell=='b' || BuySell=='B' )
+        {
+            if(squarefeet>2400)
+            {
+                price2=(squarefeet/2700)*1250000;
+            }
+            else if(squarefeet<=2400)
+            {
+                price2=(squarefeet/2400)*1100000;
+            }
+            else if(squarefeet<=2100)
+            {
+                price2=(squarefeet/2100)*950000;
+            }
+            else if(squarefeet<=1800)
+            {
+                price2=(squarefeet/1800)*800000;
+            }
+            else if(squarefeet<=1500)
+            {
+                price2=(squarefeet/1500)*650000;
+            }
+            else if(squarefeet<=1200)
+            {
+                price2=(squarefeet/1200)*500000;
+            }
+            else if(squarefeet<=900)
+            {
+                price2=(squarefeet/900)*350000;
+            }
+        }
+    return price2;
+}
+float calcdiscount(float price, int firsttime, char BuySell)
+{
+    float discount2;
+    if (BuySell=='B' || BuySell=='b')
+    {
+        if (firsttime==1)
+        {
+            discount2=(price*10)/100;
+        }
+        else
+        {
+            discount2=0;
+        }
+    }
+    else if (BuySell=='S' || BuySell=='s')
+    {
+        discount2=0;
+    }
+
+    return discount2;
+}
+float calchousetax (float price)
+{
+    float housetax2;
+    housetax2=(price*5)/100;
+    return housetax2;
+}
+float calcfinalprice (float price ,float discount ,float housetax ,char BuySell)
+{
+    float finalprice2;
+    if (BuySell=='B' || BuySell=='b')
+    {
+        finalprice2=price-discount+housetax;
+    }
+    else if (BuySell=='S' || BuySell=='s')
+    {
+        finalprice2=price+housetax;
+    }
+    return finalprice2;
+}
