@@ -1,4 +1,3 @@
-Here’s a simplified and more interactive version of the README for your "Buying or Selling House Calculation" program on GitHub:
 
 ---
 
@@ -107,4 +106,3 @@ Feel free to fork, modify, and create pull requests to contribute to the project
 
 ---
 
-Let me know if you need any further adjustments or details for the README!
